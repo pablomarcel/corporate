@@ -1,9 +1,9 @@
 import { useState } from "react"
-import { useWorkoutsContext } from "../hooks/useWorkoutsContext"
+import { usePhrasesContext } from "../hooks/usePhrasesContext"
 import { useAuthContext } from '../hooks/useAuthContext'
 
-const WorkoutForm = () => {
-  const { dispatch } = useWorkoutsContext()
+const PhraseForm = () => {
+  const { dispatch } = usePhrasesContext()
   const { user } = useAuthContext()
 
   const [title, setTitle] = useState('')
@@ -20,11 +20,11 @@ const WorkoutForm = () => {
       return
     }
 
-    const workout = {title, load, reps}
+    const phrase = {title, load, reps}
 
-    const response = await fetch('/api/workouts', {
+    const response = await fetch('/api/phrases', {
       method: 'POST',
-      body: JSON.stringify(workout),
+      body: JSON.stringify(phrase),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${user.token}`
@@ -42,42 +42,42 @@ const WorkoutForm = () => {
       setReps('')
       setError(null)
       setEmptyFields([])
-      dispatch({type: 'CREATE_WORKOUT', payload: json})
+      dispatch({type: 'CREATE_PHRASE', payload: json})
     }
   }
 
   return (
     <form className="create" onSubmit={handleSubmit}>
-      <h3>Add a New Workout</h3>
+      <h3>Add a New Phrase</h3>
 
-      <label>Excersize Title:</label>
-      <input 
+      <label>Phrase:</label>
+      <input
         type="text"
         onChange={(e) => setTitle(e.target.value)}
         value={title}
         className={emptyFields.includes('title') ? 'error' : ''}
       />
 
-      <label>Load (in kg):</label>
-      <input 
-        type="number"
+      <label>Company:</label>
+      <input
+        type="text"
         onChange={(e) => setLoad(e.target.value)}
         value={load}
         className={emptyFields.includes('load') ? 'error' : ''}
       />
 
-      <label>Reps:</label>
-      <input 
-        type="number"
+      <label>State:</label>
+      <input
+        type="text"
         onChange={(e) => setReps(e.target.value)}
         value={reps}
         className={emptyFields.includes('reps') ? 'error' : ''}
       />
 
-      <button>Add Workout</button>
+      <button>Add Phrase</button>
       {error && <div className="error">{error}</div>}
     </form>
   )
 }
 
-export default WorkoutForm
+export default PhraseForm
